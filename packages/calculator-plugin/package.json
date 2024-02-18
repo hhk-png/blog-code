@@ -1,5 +1,5 @@
 {
-  "name": "calculator-plugin",
+  "name": "@plugin/calculator-plugin",
   "type": "module",
   "version": "1.0.0",
   "description": "",
