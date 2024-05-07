@@ -1,5 +1,8 @@
 {
   "plugins": [
-    "counter"
+    {
+      "name": "counter",
+      "enabled": true
+    }
   ]
 }

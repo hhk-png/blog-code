@@ -1,17 +1,20 @@
 import fs from "fs";
-// import { App } from "../server/server.js";
+import path from 'path'
 
 export default class Plugins {
   app: any;
   plugins: { [key: string]: any };
+  pluginBase: string = path.resolve('./plugins')
   constructor(app: any) {
     // super();
     this.app = app;
     this.plugins = {};
   }
-
-  async loadFromConfig(path = './plugins.json') {
-    const plugins = JSON.parse(fs.readFileSync(path, 'utf8')).plugins;
+  
+  async loadFromConfig(configPath = './plugins.json') {
+    configPath = path.resolve(this.pluginBase, configPath)
+    console.log(configPath)
+    const plugins = JSON.parse(fs.readFileSync(configPath, 'utf8')).plugins;
     for (const plugin of plugins) {
       if (plugin.enabled) {
         this.load(plugin.name);
@@ -21,10 +24,11 @@ export default class Plugins {
 
   async load(name: string) {
     try {
-      const plugin = await import(`./${name}.js`);
+      const filePath = path.dirname(import.meta.url) + `/${name}.ts`
+      const plugin = await import(filePath);
       this.plugins[name] = plugin;
       await this.plugins[name].load(this.app);
-      console.log(`Loaded plugin: '${plugin}'`);
+      console.log(`Loaded plugin: '${name}'`);
     } catch(e) {
       console.log(`Failed to load plugin: '${name}'`);
       this.app.stop();

@@ -8,7 +8,7 @@ app.start();
   "SIGUSR1",
   "SIGUSR2",
   "SIGTERM",
-  "uncaughtException",
+  "uncaughtException"
 ].forEach((e) => {
   process.on(e, () => app.stop());
 });

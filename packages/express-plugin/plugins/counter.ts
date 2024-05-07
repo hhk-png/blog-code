@@ -1,11 +1,12 @@
 import fs from 'fs';
-// import { App } from '../server/server.js';
+import path from 'path'
 
 let count: number = 0;
+const txtPath: string = path.resolve('./packages/express-plugin/plugins/counter.txt');
 
 export function load(app: any) {
   try {
-    count += parseInt(fs.readFileSync('./counter.txt', 'utf8'));
+    count += parseInt(fs.readFileSync(txtPath, 'utf8'));
   } catch(e) {
     console.log('No counter file found');
   }
@@ -19,6 +20,6 @@ export function load(app: any) {
 }
 
 export function unload() {
-  fs.writeFileSync('./counter.txt', count + "");
+  fs.writeFileSync(txtPath, count + "");
 }
 
